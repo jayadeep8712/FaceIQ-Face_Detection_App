@@ -1,4 +1,4 @@
-# FaceIQ - Face Detection App
+# FaceIQ - Face_Detection_App
 
 ![FaceIQ Logo](#)
 
