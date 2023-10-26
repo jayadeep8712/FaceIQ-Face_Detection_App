@@ -1,4 +1,4 @@
-# FaceIQ API - Facial Emotion Detection
+# FaceIQ - Face Detection App
 
 ![FaceIQ Logo](#)
 
