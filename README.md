@@ -1,4 +1,4 @@
-# FaceIQ - Face_Detection_App
+# Face IQ - Face_Detection_App
 
 ![FaceIQ Logo](http://1.bp.blogspot.com/-4xXF29zid2A/Vj-NOdQVvII/AAAAAAAAA98/szb2P4r_D9Q/s1600/ano.png)
 
