@@ -1,263 +1,479 @@
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>FaceDetection</title>
-  <script defer src="face-api.min.js"></script>
-  <script defer src="script.js"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    canvas {
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <video id="video" width="720" height="560" autoplay muted></video>
-</body>
-</html>-->
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>FaceIQ</title>
-  <link rel="icon" href="http://1.bp.blogspot.com/-4xXF29zid2A/Vj-NOdQVvII/AAAAAAAAA98/szb2P4r_D9Q/s1600/ano.png">
+  <title>FaceIQ - Advanced Face Detection</title>
+  <link rel="icon" href="IQlogo.png">
   <script defer src="face-api.min.js"></script>
   <script defer src="script.js"></script>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
-    canvas {
-      position: absolute;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-
-
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(to bottom right, #9b59b6, #e91e63);
-
-      color: #fff;
-      font-family: 'Arial', sans-serif;
-      /* overflow: hidden; */
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    #container {
-      text-align: center;
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(74, 86, 226, 0.15) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
     }
 
-    #video {
-      width: 720px;
-      height: 560px;
-      border: 5px solid #fff;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
-      transition: transform 0.3s ease-in-out;
-      width: fit-content;
+    canvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); 
+      pointer-events: none;
     }
 
-    #video:hover {
-      transition: .5s;
-      transform: scale(1.05);
+    /* Header */
+    .header {
+      background: rgba(15, 15, 15, 0.6);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
-    h1 {
-      font-size: 2.5em;
-    }
-
-    p {
-      font-size: 1.2em;
-    }
-
-    .content {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      box-shadow: 0 0 10px #000;
-    }
-
-    .para {
-      color: #eeeeee;
-      max-width: 800px;
-    }
-
-    .para h2 {
-      color: black;
-      font-size: 24px;
-    }
-
-    .para ul {
-      list-style-type: disc;
-      padding-left: 20px;
-    }
-
-    .para li {
-      margin: 5px 0;
-    }
-
-
-
-
-
-
-
-    /* Navigation bar styles */
-    .app-nav {
-      background-color: #000000;
-      color: #fff;
-      padding: 20px 0;
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 100%;
+      padding: 1.5rem 3rem;
     }
 
-    /* Navigation links styles */
-    .nav-links ul {
-      list-style: none;
-      padding: 0;
+    .logo {
       display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+
+    .logo img {
+      width: 28px;
+      height: 28px;
+      filter: brightness(1.2);
+    }
+
+    .logo .accent {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 400;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links a:hover {
+      color: #ffffff;
+    }
+
+    .nav-links i {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 6rem 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-section {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 6rem;
+      align-items: center;
+      margin-bottom: 8rem;
+    }
+
+    .hero-text h1 {
+      font-size: 4rem;
+      font-weight: 600;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-text .gradient-text {
+      background: linear-gradient(135deg, #a8b5ff 0%, #c7d2fe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-text p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 3rem;
+      max-width: 500px;
+    }
+
+    .features-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .feature-box {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .feature-box:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .feature-box i {
+      font-size: 1.25rem;
+      color: #a8b5ff;
+      min-width: 24px;
+    }
+
+    .feature-box span {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 0.95rem;
+      font-weight: 400;
+    }
+
+    /* Video Section */
+    .video-wrapper {
+      position: relative;
+    }
+
+    .glass-container {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 1.5rem;
+      box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;  
+      display: flex;       
+      justify-content: center;
       align-items: center;
     }
 
-    .nav-links li {
-      margin: 0 15px;
+    #video {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      display: block;
+      background: #000;
+    }
+
+    .live-indicator {
+      position: absolute;
+      top: 2.5rem;
+      right: 2.5rem;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #ffffff;
+      letter-spacing: 0.05em;
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      }
+      50% {
+        opacity: 0.8;
+        box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+      }
+    }
+
+    /* Stats Section */
+    .stats-section {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-bottom: 6rem;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-4px);
+    }
+
+    .stat-card i {
+      font-size: 2rem;
+      color: #a8b5ff;
+      margin-bottom: 1.5rem;
+      opacity: 0.9;
+    }
+
+    .stat-card h3 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-card p {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.9rem;
+      font-weight: 400;
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 2.5rem 3rem;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-content p {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.85rem;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 1rem;
       list-style: none;
     }
 
-    /* Navigation link styles */
-    .nav-links a {
-      text-decoration: none;
-      color: #fff;
-      font-weight: bold;
-      transition: color 0.3s;
+    .social-icons a {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    /* Hover effect for navigation links */
-    .nav-links a:hover {
-      color: #ef1aa4;
-      /* Change the color on hover to make it visually appealing */
+    .social-icons a:hover {
+      color: #a8b5ff;
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-section {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+      }
+
+      .hero-text h1 {
+        font-size: 3rem;
+      }
+
+      .stats-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        padding: 1.25rem 1.5rem;
+      }
+
+      .container {
+        padding: 4rem 1.5rem;
+      }
+
+      .nav-links {
+        gap: 1.5rem;
+        font-size: 0.85rem;
+      }
+
+      .hero-text h1 {
+        font-size: 2.5rem;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
     }
   </style>
 </head>
-
 <body>
-
-  <nav class="app-nav">
-    <ul class="nav-links" style="display: flex;">
-      <li><a href="#features">Features</a></li>
-      <li><a href="#download">Download</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
-  <section class="content">
-    <div class="para">
-      <h1 style="transform: translateY(-50px); ">Face<span style="color: black;">I</span><img
-          src="http://1.bp.blogspot.com/-4xXF29zid2A/Vj-NOdQVvII/AAAAAAAAA98/szb2P4r_D9Q/s1600/ano.png" alt="logo"
-          width="6%" style="transform: translateY(5px);"></h1>
-      <h2>Welcome to our Face Detection App</h2>
-      <p>Experience the power of our cutting-edge face detection technology. With our app, you can easily detect and
-        analyze faces in images and videos. Whether you're building a security system or just having fun with facial
-        recognition, we've got you covered.</p>
-      <p style="color: #000; font-weight: bold;">Key features:</p>
-      <ul>
-        <li>Real-time face detection in videos</li>
-        <li>Accurate facial recognition</li>
-        <li>Seamless integration with your projects</li>
+  <!-- Header -->
+  <header class="header">
+    <nav class="nav-container">
+      <div class="logo">
+        <img src="IQlogo.png" alt="FaceIQ">
+        <span>Face<span class="accent">IQ</span></span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#features"><i class="fas fa-sparkles"></i> Features</a></li>
+        <li><a href="#download"><i class="fas fa-download"></i> Download</a></li>
+        <li><a href="#contact"><i class="fas fa-paper-plane"></i> Contact</a></li>
       </ul>
-    </div>
-    <video id="video" width="750" height="520" autoplay muted></video>
-  </section>
+    </nav>
+  </header>
 
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-text">
+        <h1>
+          Advanced Face<br>
+          <span class="gradient-text">Detection AI</span>
+        </h1>
+        <p>Real-time facial recognition powered by cutting-edge neural networks. Precise, fast, and seamlessly integrated.</p>
+        
+        <div class="features-grid">
+          <div class="feature-box">
+            <i class="fas fa-video"></i>
+            <span>Real-time video processing</span>
+          </div>
+          <div class="feature-box">
+            <i class="fas fa-brain"></i>
+            <span>Neural network recognition</span>
+          </div>
+          <div class="feature-box">
+            <i class="fas fa-code"></i>
+            <span>Easy API integration</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-wrapper">
+        <div class="glass-container">
+          <div class="live-indicator">
+            <div class="live-dot"></div>
+            <span>LIVE</span>
+          </div>
+          <video id="video" autoplay muted></video>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <div class="stat-card">
+        <i class="fas fa-bolt"></i>
+        <h3>60 FPS</h3>
+        <p>Processing Speed</p>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-bullseye"></i>
+        <h3>99.7%</h3>
+        <p>Detection Accuracy</p>
+      </div>
+      <div class="stat-card">
+        <i class="fas fa-shield-halved"></i>
+        <h3>100%</h3>
+        <p>Privacy Secure</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
   <footer>
     <div class="footer-content">
       <p>&copy; 2023 FaceIQ. All rights reserved.</p>
-      <ul class="social-icons" style="list-style: none; display: flex;">
-        <li><a href="https://www.facebook.com/yourfacebookprofile" class="icon-facebook"><i
-              class="fab fa-facebook"></i></a></li>
-        <li><a href="https://twitter.com/yourtwitterprofile" class="icon-twitter"><i class="fab fa-twitter"></i></a>
-        </li>
-        <li><a href="https://www.instagram.com/yourinstagramprofile" class="icon-instagram"><i
-              class="fab fa-instagram"></i></a></li>
-        <li><a href="https://www.linkedin.com/in/yourlinkedinprofile" class="icon-linkedin"><i
-              class="fab fa-linkedin"></i></a></li>
+      <ul class="social-icons">
+        <li><a href="https://www.facebook.com/" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+        <li><a href="https://twitter.com/" aria-label="Twitter"><i class="fab fa-twitter"></i></a></li>
+        <li><a href="https://www.instagram.com/" aria-label="Instagram"><i class="fab fa-instagram"></i></a></li>
+        <li><a href="https://www.linkedin.com/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a></li>
       </ul>
     </div>
-
-    <style>
-      footer {
-        background-color: #000000;
-        width: 100%;
-        color: #fff;
-        padding: 5px 0;
-        text-align: center;
-      }
-
-      /* Footer content styles */
-      .footer-content {
-        max-width: 800px;
-        margin: 0 auto;
-      }
-
-      /* Copyright text styles */
-      .footer-content p {
-        margin: 0;
-        font-size: 14px;
-      }
-
-      /* Social icons list styles */
-      .social-icons {
-        list-style: none;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        margin-top: 10px;
-      }
-
-      /* Individual social icon styles */
-      .social-icons li {
-        margin: 0 15px;
-      }
-
-      /* Social icon link styles */
-      .social-icons a {
-        color: #fff;
-        font-size: 15px;
-        text-decoration: none;
-      }
-
-      /* Hover effect for social icons */
-      .social-icons a:hover {
-        color: #ff00b7;
-         
-      }
-    </style>
   </footer>
-
 </body>
-
 </html>

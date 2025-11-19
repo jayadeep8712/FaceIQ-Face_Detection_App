@@ -1,4 +1,5 @@
 const video = document.getElementById('video')
+const videoContainer = document.querySelector('.glass-container') // We need this to center the canvas
 
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
@@ -8,21 +9,38 @@ Promise.all([
 ]).then(startVideo)
 
 function startVideo() {
-  navigator.getUserMedia(
-    { video: {} },
-    stream => video.srcObject = stream,
-    err => console.error(err)
-  )
+  navigator.mediaDevices.getUserMedia({ video: {} })
+    .then(stream => video.srcObject = stream)
+    .catch(err => console.error(err))
 }
 
-video.addEventListener('play', () => {
+video.addEventListener('playing', () => {
   const canvas = faceapi.createCanvasFromMedia(video)
-  document.body.append(canvas)
-  const displaySize = { width: video.width, height: video.height }
+ 
+  videoContainer.append(canvas)
+  
+  const displaySize = { 
+    width: video.clientWidth, 
+    height: video.clientHeight 
+  }
+  
   faceapi.matchDimensions(canvas, displaySize)
+
+  // 4. Fix for the resizing issue
   setInterval(async () => {
-    const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
-    const resizedDetections = faceapi.resizeResults(detections, displaySize)
+    const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+      .withFaceLandmarks()
+      .withFaceExpressions()
+    
+    // DYNAMICALLY check size every frame in case window is resized
+    const currentDisplaySize = { 
+        width: video.clientWidth, 
+        height: video.clientHeight 
+    }
+    faceapi.matchDimensions(canvas, currentDisplaySize)
+
+    const resizedDetections = faceapi.resizeResults(detections, currentDisplaySize)
+    
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
     faceapi.draw.drawDetections(canvas, resizedDetections)
     faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
