@@ -22,7 +22,7 @@
 ## ⚡ Quick Start
 1. Clone the repo
    ```bash
-   git clone https://github.com/jayadeep8712/FaceIQ-Face_Detection_App.git
+   git clone https://github.com/jayadeep8712/FaceIQ-Browser-Based-Emotion-Recognition.git
    ```
 
 2. Navigate to the project
