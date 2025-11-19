@@ -6,13 +6,14 @@
   </p>
 </div>
 
-
 <br />
 
 ## 🚀 Features
 - **Client-Side Inference:** Runs entirely in the browser using TensorFlow.js (no server latency).
 - **Privacy First:** Biometric data never leaves the user's device.
 - **Real-Time Performance:** Optimized for low-latency detection.
+
+NOTE: *99.7% is based on the benchmark performance of the SSD Mobilenet V1 model used by face-api.js on the LFW (Labeled Faces in the Wild) dataset.*
 
 ## 🛠 Tech Stack
 - **Core:** JavaScript
