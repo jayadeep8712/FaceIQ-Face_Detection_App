@@ -1,10 +1,10 @@
 # <div align="center">
 
-# &nbsp; <img src="./IQlogo.png" alt="FaceIQ Logo" width="100">
+#   <img src="./IQlogo.png" alt="FaceIQ Logo" width="100">
 
-# &nbsp; <h1>FaceIQ</h1>
+#   <h1>FaceIQ</h1>
 
-# &nbsp; <p><b>Browser-Based Emotion Recognition</b></p>
+#   <p>**Browser-Based Emotion Recognition**</p>
 
 # </div>
 
@@ -45,4 +45,6 @@
 # 2\. Run `npx http-server`
 
 # 3\. Open `localhost:8080`
+
+
 
