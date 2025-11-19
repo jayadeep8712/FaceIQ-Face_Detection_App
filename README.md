@@ -1,8 +1,20 @@
-# \# FaceIQ - Browser-Based Emotion Recognition
+# <div align="center">
+
+# &nbsp; <img src="./IQlogo.png" alt="FaceIQ Logo" width="100">
+
+# &nbsp; <h1>FaceIQ</h1>
+
+# &nbsp; <p><b>Browser-Based Emotion Recognition</b></p>
+
+# </div>
 
 # 
 
-# !\[FaceIQ Screenshot](./IQlogo)
+# <br />
+
+# 
+
+# !\[FaceIQ Screenshot](./screenshot.png)
 
 # 
 
@@ -12,7 +24,7 @@
 
 # \- \*\*Privacy First:\*\* Biometric data never leaves the user's device.
 
-# \- \*\*Real-Time Performance:\*\* optimized for low-latency detection.
+# \- \*\*Real-Time Performance:\*\* Optimized for low-latency detection.
 
 # 
 
