@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./IQ/IQlogo.png" alt="FaceIQ Logo" width="100">
+  <img src="./IQlogo.png" alt="FaceIQ Logo" width="100">
   <h1 align="center">FaceIQ</h1>
   <p align="center">
     <b>Browser-Based Emotion Recognition</b>
