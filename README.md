@@ -1,7 +1,5 @@
 # Face IQ - Face_Detection_and_Emotion_Recognition_App
 
-![FaceIQ Logo](http://1.bp.blogspot.com/-4xXF29zid2A/Vj-NOdQVvII/AAAAAAAAA98/szb2P4r_D9Q/s1600/ano.png)
-
 Welcome to FaceIQ, your cutting-edge facial emotion detection API. Analyze emotions live with precision and ease.
 
 ## Features
